@@ -1,0 +1,21 @@
+.component-corner {    
+    height: 102px;
+    width: 292px;
+    position: relative;
+
+    .corner-background {
+        left: 0;
+        position: absolute;
+        top: 0;
+        z-index: -1;
+    }
+
+    .corner-content {        
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+    }
+}

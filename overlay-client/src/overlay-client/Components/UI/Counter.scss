@@ -1,0 +1,23 @@
+.component-counter {
+    color: white;    
+    width: 100%;
+    height: 100%;
+    
+    // TODO: Add text stretching
+
+    >.margin { 
+        margin: 0 20px;
+        height: 100%;        
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        
+        >* {
+            flex: auto;            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+}
