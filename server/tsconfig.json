@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "module": "es2017",
+        "target": "es2017",
+    }
+}
