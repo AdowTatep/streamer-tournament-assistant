@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import OverlayClient from './overlay-client/OverlayClient';
+import './App.scss';
+import DashClient from './dash-client/DashClient';
 
 class App extends Component {
   render() {
     return (
-      <OverlayClient />
+      <DashClient />
     );
   }
 }
