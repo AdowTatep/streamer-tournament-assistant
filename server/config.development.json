@@ -1,0 +1,4 @@
+{
+    "mongoUrl": "mongodb://root:example@localhost",
+    "socketPort": 5432
+}

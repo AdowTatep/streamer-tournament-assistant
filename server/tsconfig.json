@@ -3,7 +3,9 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "strictNullChecks": true,
-        "module": "es6",
+        "module": "commonjs",
         "target": "es2017",
-    }
+        "declaration": true,
+        "declarationMap": true,
+    },
 }
