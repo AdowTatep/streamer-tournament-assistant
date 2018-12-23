@@ -1,11 +1,10 @@
 import * as React from 'react';
-
-import Overlay from './Components/Overlay';
+import OverlayRouter from './OverlayRouter';
 
 class OverlayClient extends React.Component {
   public render() {
     return (
-      <Overlay />
+      <OverlayRouter />
     );
   }
 }

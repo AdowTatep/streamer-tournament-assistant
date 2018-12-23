@@ -1,0 +1,43 @@
+.component-table {
+    .table {
+        background-color: transparent;
+        color: inherit;
+
+        &.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+            //Stripe color
+            background-color: var(--gray5);
+        }
+
+        thead {
+            background-color: var(--gray5);
+
+            &td,
+            th {
+                padding-top: 1em;
+                padding-bottom: 1em;
+                color: inherit;
+                border-width: 0 0 2px;
+                font-weight: bold;
+                padding-left: 18px;
+            }
+        }
+
+        tbody {
+            tr {
+                &:hover {
+                    cursor: pointer;
+                    background-color: var(--gray5);
+                }
+            }
+        }
+
+        th {
+            border: none;
+        }
+
+        td {
+            border: none;
+            padding-left: 20px;
+        }
+    }
+}

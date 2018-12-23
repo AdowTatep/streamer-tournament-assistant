@@ -1,1 +1,11 @@
-.component-Card {}
+.component-Card {
+    color: var(--text-white);
+    background-color: var(--gray4);
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+    padding: 0px;
+    border-radius: 0px;
+
+    &.light {
+        background-color: var(--gray1);
+    }
+}

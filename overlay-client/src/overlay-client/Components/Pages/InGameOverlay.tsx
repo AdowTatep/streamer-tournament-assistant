@@ -1,15 +1,15 @@
 import * as React from 'react';
-import "./Overlay.scss";
-import TeamScore from './Elements/League/TeamScore';
-import Corner from './Elements/League/Corner';
-import VerticalLayout from './Layout/VerticalLayout';
-import Counter from './UI/Counter';
-import Transition from './Layout/Transition';
+import "./InGameOverlay.scss";
+import TeamScore from '../Elements/League/TeamScore';
+import Corner from '../Elements/League/Corner';
+import VerticalLayout from '../Layout/VerticalLayout';
+import Counter from '../UI/Counter';
+import Transition from '../Layout/Transition';
 
-class Overlay extends React.Component {
+class InGameOverlay extends React.Component {
     public render() {
         return (
-            <div className="component-overlay">
+            <div className="component-inGameOverlay">
                 <VerticalLayout top={this.getLayoutTop()} middle={this.getLayoutMiddle()} bottom={this.getLayoutBottom()} />
             </div>
         );
@@ -48,4 +48,4 @@ class Overlay extends React.Component {
     }
 }
 
-export default Overlay;
+export default InGameOverlay;

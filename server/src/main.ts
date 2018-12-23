@@ -7,9 +7,9 @@ import { MongoClient, Collection } from "mongodb";
 
 // Own entityes
 import { IConfig } from "./IConfig";
-import { IPlayer } from "./entities/Player";
+import { IPlayer } from "./entities/IPlayer";
 
-const config: IConfig = JSON.parse(fs.readFileSync(`./config.${process.env.NODE_ENV}.json`, 'utf8'));
+const config: IConfig = JSON.parse(fs.readFileSync(`./config.${process.env.NODE_ENV || "development"}.json`, 'utf8'));
 
 const connectMongo = <T>(databaseName: string, collectionName: string): Promise<Collection<T>> => {
     return new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ io
         socket.on('create', (args) => {
             connectMongo<IPlayer>("tournament", "players")
                 .then(collection => {
-                    collection.insert({ name: 'jhon' })
+                    collection.insert({ id: `player${Date.now()}`, name: 'jhon' })
                     socket.emit('created', true);
                 })
         });

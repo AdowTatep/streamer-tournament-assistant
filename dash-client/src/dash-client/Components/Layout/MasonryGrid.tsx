@@ -6,7 +6,7 @@ export interface IProps {
 
 }
 
-class MasonryGrid extends React.Component {
+class MasonryGrid extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);

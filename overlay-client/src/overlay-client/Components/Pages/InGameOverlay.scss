@@ -1,9 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
 @keyframes showScore {
-    0% { transform: translateY(-66px); }
-    80% { transform: translateY(0px); }
-    100% { transform: translateY(-6px); }
+    0% {
+        transform: translateY(-66px);
+    }
+
+    80% {
+        transform: translateY(0px);
+    }
+
+    100% {
+        transform: translateY(-6px);
+    }
 }
 
 $animDelay: 2s;
@@ -17,17 +25,17 @@ $animDelay: 2s;
     animation-delay: $animDelay;
 }
 
-.component-overlay {    
+.component-inGameOverlay {
     height: 100vh;
     width: 100vw;
     margin: 0px;
     font-family: 'Lato', sans-serif;
-    
-    .container-top {        
+
+    .container-top {
         display: flex;
         justify-content: space-between;
 
-        .scoreWrapper {        
+        .scoreWrapper {
             margin: 0 15em;
             @extend %animationScore;
         }
@@ -39,5 +47,5 @@ $animDelay: 2s;
 
     .component-corner {
         margin: 0 0 8px 7px;
-    }    
+    }
 }
