@@ -16,28 +16,22 @@ export class EntityStore<T> {
         this.storeEvents.on(eventName, event);
     }
 
-    public retrievePlayers(player?: T): Promise<T[]> {
+    public retrieveEntities(entity?: T): Promise<T[]> {
         return new Promise((resolve, reject) => {
             request.get(this.host, (error, resp, sbody) => {
                 if (error || sbody === undefined || !sbody) {
                     reject(error);
                 } else {
                     let body = JSON.parse(sbody);
-                    resolve(body.players || []);
+                    resolve(body[this.namespace + "s"] || []);
                 }
             })
         });
     }
 
-    public createPlayer(player: T): Promise<T> {
-        let body = JSON.stringify({ player });
-        let opts = {
-            url: this.host,
-            body: body,
-            headers: {
-                'content-type': 'application/json'
-            }
-        };
+    public createEntity(entity: T): Promise<T> {
+        let body = JSON.stringify({ [this.namespace]: entity });
+        let opts = { url: this.host, body: body, headers: { 'content-type': 'application/json' } };
 
         return new Promise((resolve, reject) => {
             request.post(opts, (error, resp, sbody) => {
@@ -45,14 +39,14 @@ export class EntityStore<T> {
                     reject(error);
                 } else {
                     let body = JSON.parse(sbody);
-                    resolve(body.player || []);
+                    resolve(body[this.namespace] || []);
                 }
             })
         });
     }
 
-    public updatePlayer(player: T): Promise<T> {
-        let body = JSON.stringify({ player });
+    public updateEntity(entity: T): Promise<T> {
+        let body = JSON.stringify({ [this.namespace]: entity });
         let opts = { url: this.host, body: body, headers: { 'content-type': 'application/json' } };
         return new Promise((resolve, reject) => {
             request.put(opts, (error, resp, sbody) => {
@@ -60,14 +54,14 @@ export class EntityStore<T> {
                     reject(error);
                 } else {
                     let body = JSON.parse(sbody);
-                    resolve(body.player || []);
+                    resolve(body[this.namespace] || []);
                 }
             })
         });
     }
 
-    public deletePlayer(player: T): Promise<T> {
-        let body = JSON.stringify({ player });
+    public deleteEntity(entity: T): Promise<T> {
+        let body = JSON.stringify({ [this.namespace]: entity });
         let opts = { url: this.host, body: body, headers: { 'content-type': 'application/json' } };
         return new Promise((resolve, reject) => {
             request.delete(opts, (error, resp, sbody) => {
@@ -75,7 +69,7 @@ export class EntityStore<T> {
                     reject(error);
                 } else {
                     let body = JSON.parse(sbody);
-                    resolve(body.player || []);
+                    resolve(body[this.namespace] || []);
                 }
             })
         });

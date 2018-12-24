@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { EntityStore } from '../../Stores/EntityStore';
 import ElementCrud from './ElementCrud';
+import Heading from '../UI/Heading';
 
 interface TElement {
     _id: string;
@@ -27,7 +28,7 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
     public componentDidMount() {
         this.store.on("playerListUpdate", (event) => { this.updateElementList(event); })
         this.store
-            .retrievePlayers()
+            .retrieveEntities()
             .then(players => {
                 this.updateElementList(players);
             })
@@ -39,6 +40,9 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
         const ElCrud = ElementCrud as ElCrud;
         return (
             <div className={`component-players`}>
+                <Heading>
+                    {this.props.namespace.substring(0, 1).toLocaleUpperCase() + this.props.namespace.substring(1)}s
+                </Heading>
                 <ElCrud
                     elements={this.state.elements}
                     selectedElement={this.state.selectedElement}
@@ -67,7 +71,7 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
 
         // Try to really create the element
         this.store
-            .createPlayer(element)
+            .createEntity(element)
             .then(player => {
                 // If the element was created, update the list again, but with the real data
                 oldElements.push(player);
@@ -90,7 +94,7 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
         newElements[i] = element;
         this.updateElementList(newElements);
 
-        this.store.updatePlayer(element)
+        this.store.updateEntity(element)
             .then(player => {
                 if (player) {
                     // If succeeded, update the list again, but with the real data
@@ -117,7 +121,7 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
         this.updateElementList(newElements);
 
         // Refresh list
-        this.store.deletePlayer(this.state.elements[i])
+        this.store.deleteEntity(this.state.elements[i])
             .then(element => {
                 if (element) {
                     var index = oldElements.findIndex(x => x._id == element._id);
