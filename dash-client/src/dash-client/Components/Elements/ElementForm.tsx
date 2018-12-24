@@ -7,9 +7,21 @@ export interface IProps<T> {
     isUpdate: boolean;
 }
 
-export abstract class ElementForm<T, TState> extends React.Component<IProps<T>, TState> {
+interface IState<T> {
+    element?: T;
+    dirty: boolean;
+}
+
+export default abstract class ElementForm<T> extends React.Component<IProps<T>, IState<T>> {
+
     constructor(props: IProps<T>) {
         super(props);
+        this.state = { element: this.props.element, dirty: false };
+    }
+
+    public componentWillReceiveProps(props: IProps<T>) {
+        if (!this.state.dirty)
+            this.setState({ element: props.element });
     }
 
     public render() {
@@ -23,7 +35,26 @@ export abstract class ElementForm<T, TState> extends React.Component<IProps<T>, 
     }
     protected abstract getFields(): React.ReactNode;
 
-    protected abstract submit(): void;
+    public onChange(e: any): void {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        const val: any = { [name]: value };
+
+        this.setState({
+            element: val,
+            dirty: true
+        });
+    }
+
+    protected submit(): void {
+        this.props.onSubmit(this.state.element, false);
+        this.setState({
+            element: undefined,
+            dirty: false
+        });
+    }
 
     public cancelUpdate(): void {
         this.props.onSubmit(undefined, true);

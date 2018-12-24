@@ -3,12 +3,12 @@ import "./ElementCrud.scss";
 import FixedColumn from '../Layout/FixedColumn';
 import Card from '../UI/Card';
 import DeleteConfirmation from '../UI/DeleteConfirmation';
-import { ElementForm } from './ElementForm';
+import ElementForm from './ElementForm';
 
-interface IProps<T, S> {
+interface IProps<T> {
     elements: T[];
     elementTable: React.ReactNode;
-    elementForm: ElementForm<T, S>;
+    elementForm: ElementForm<T>;
     selectedElement: number;
     createElement: (element: T, ) => void;
     deleteElement: (element: T, i: number) => void;
@@ -20,9 +20,9 @@ interface IState<T> {
     elementToDelete: number;
 }
 
-export default class ElementCrud<T, S> extends React.Component<IProps<T, S>, IState<T>> {
+export default class ElementCrud<T, S> extends React.Component<IProps<T>, IState<T>> {
 
-    constructor(props: IProps<T, S>) {
+    constructor(props: IProps<T>) {
         super(props);
         this.state = { elementToDelete: -1, elementToUpdate: -1 };
     }
@@ -61,7 +61,7 @@ export default class ElementCrud<T, S> extends React.Component<IProps<T, S>, ISt
                 <DeleteConfirmation onCancel={() => { this.setState({ elementToDelete: -1 }) }} onConfirm={() => { this.onElementDelete(); }} />
             );
         } else {
-            type ElForm = new () => ElementForm<T, S>;
+            type ElForm = new () => ElementForm<T>;
             const ElForm = this.props.elementForm as unknown as ElForm;
             return (
                 <div>
@@ -100,6 +100,7 @@ export default class ElementCrud<T, S> extends React.Component<IProps<T, S>, ISt
             if (this.state.elementToUpdate !== -1) {
                 //Handle update
                 this.props.updateElement(element, this.state.elementToUpdate);
+                this.setState({ elementToUpdate: -1 });
             } else {
                 //Handle create                
                 this.props.createElement(element);

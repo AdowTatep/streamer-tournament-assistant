@@ -47,6 +47,7 @@ export default class Players extends React.Component<IProps, IState> {
             </div>
         );
     }
+
     getForm(): any {
         return PlayersForm;
     }
@@ -66,8 +67,8 @@ export default class Players extends React.Component<IProps, IState> {
     private onPlayerDelete(player: IPlayer, i: number): void {
         // Get every that isn't the deleted
         // Refresh list
-        this.updatePlayerList(this.state.players.filter((x, i) => i !== i));
         this.store.deletePlayer(this.state.players[i]);
+        this.updatePlayerList(this.state.players.filter((x, ind) => ind !== i));
     }
 
     private onPlayerSelected(player: IPlayer, i: number): void {
