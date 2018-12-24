@@ -94,8 +94,12 @@ export default class Players extends React.Component<IProps, IState> {
 
         this.store.updatePlayer(element)
             .then(player => {
-                // If succeeded, update the list again, but with the real data
-                oldPlayers.push(player);
+                if (player) {
+                    // If succeeded, update the list again, but with the real data
+                    var index = oldPlayers.findIndex(x => x._id == player._id);
+                    oldPlayers[index] = player;
+                }
+
                 this.updatePlayerList(oldPlayers);
             })
             .catch(err => {
@@ -117,8 +121,11 @@ export default class Players extends React.Component<IProps, IState> {
         // Refresh list
         this.store.deletePlayer(this.state.players[i])
             .then(player => {
-                // If succeeded, update the list again, but with the real data
-                oldPlayers.push(player);
+                if (player) {
+                    var index = oldPlayers.findIndex(x => x._id == player._id);
+                    oldPlayers.splice(index, 1);
+                }
+
                 this.updatePlayerList(oldPlayers);
             })
             .catch(err => {

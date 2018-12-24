@@ -10,6 +10,8 @@ import * as cors from "cors";
 // Own entityes
 import { IConfig } from "./IConfig";
 import { PlayerService } from "./services/PlayerService";
+import { EntityService } from "./services/EntityService";
+import { IPlayer } from "./entities/IPlayer";
 
 const config: IConfig = JSON.parse(fs.readFileSync(`./config.${process.env.NODE_ENV || "development"}.json`, 'utf8'));
 
@@ -19,7 +21,7 @@ const app = express();
 app.use(bodyParser.json({}));
 app.use(cors());
 
-const playerService = new PlayerService();
+const playerService = new EntityService<IPlayer>("player");
 
 playerService.bindQueue(io);
 playerService.bindEndpoints(app);

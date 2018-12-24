@@ -40,7 +40,7 @@ export default abstract class ElementForm<T> extends React.Component<IProps<T>, 
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        const val: any = { [name]: value };
+        const val: any = { ...this.state.element, [name]: value };
 
         this.setState({
             element: val,

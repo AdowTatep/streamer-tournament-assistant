@@ -74,7 +74,7 @@ export class PlayerService {
             mongoCollection<IPlayer>("tournament", "players")
                 .then(collection => {
                     collection
-                        .insert({ id: `player${Date.now()}`, ...player })
+                        .insert(player)
                         .then(x => {
                             if (x.insertedCount > 0) {
                                 resolve(x.ops[0]);
@@ -109,7 +109,7 @@ export class PlayerService {
             mongoCollection<IPlayer>("tournament", "players")
                 .then(collection => {
                     collection
-                        .update({ id: player.id }, player)
+                        .update({ id: player._id }, player)
                         .then(result => {
                             resolve();
                         })
@@ -124,7 +124,7 @@ export class PlayerService {
             mongoCollection<IPlayer>("tournament", "players")
                 .then(collection => {
                     collection
-                        .update({ id: player.id }, player)
+                        .update({ id: player._id }, player)
                         .then(result => {
                             resolve();
                         })
