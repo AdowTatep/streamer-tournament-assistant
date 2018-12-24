@@ -4,7 +4,7 @@ import ElementCrud from './ElementCrud';
 import Heading from '../UI/Heading';
 
 interface TElement {
-    _id: string;
+    _id?: string;
 }
 
 interface IProps {
@@ -128,7 +128,7 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
                     oldElements.splice(index, 1);
                 }
 
-                this.updateElementList(oldElements);
+                this.updateElementList(oldElements, { selectedElement: -1 });
             })
             .catch(err => {
                 // If some error occurred, rollback
@@ -145,7 +145,7 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
         }
     }
 
-    private updateElementList(elements: T[]): void {
-        this.setState({ elements });
+    private updateElementList(elements: T[], additional?: any): void {
+        this.setState({ ...additional, elements });
     }
 }

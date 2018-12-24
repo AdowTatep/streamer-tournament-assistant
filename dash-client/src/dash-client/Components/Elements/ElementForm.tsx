@@ -16,11 +16,11 @@ export default abstract class ElementForm<T> extends React.Component<IProps<T>, 
 
     constructor(props: IProps<T>) {
         super(props);
-        this.state = { element: this.props.element, dirty: false };
+        this.state = { element: this.props.element ? this.props.element : ({} as T), dirty: false };
     }
 
     public componentWillReceiveProps(props: IProps<T>) {
-        if (!this.state.dirty)
+        if (!this.state.dirty && props.isUpdate)
             this.setState({ element: props.element });
     }
 
@@ -50,13 +50,18 @@ export default abstract class ElementForm<T> extends React.Component<IProps<T>, 
 
     protected submit(): void {
         this.props.onSubmit(this.state.element, false);
-        this.setState({
-            element: undefined,
-            dirty: false
-        });
+        this.clearState();
     }
 
     public cancelUpdate(): void {
         this.props.onSubmit(undefined, true);
+        this.clearState();
+    }
+
+    protected clearState() {
+        this.setState({
+            element: ({} as T),
+            dirty: false
+        });
     }
 }

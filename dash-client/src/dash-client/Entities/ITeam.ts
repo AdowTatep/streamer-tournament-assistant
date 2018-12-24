@@ -1,11 +1,11 @@
 import { IPlayer } from "./IPlayer";
 
 export interface ITeam {
-    _id: string;
+    _id?: string;
 
-    name: string;
+    name?: string;
 
-    logoUrl: string;
+    logoUrl?: string;
 
-    players: IPlayer[];
+    players?: IPlayer[];
 }

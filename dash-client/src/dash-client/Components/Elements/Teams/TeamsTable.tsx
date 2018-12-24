@@ -55,7 +55,7 @@ class TeamsTable extends React.Component<IProps> {
 
     private getPlayersNames(team: ITeam): string {
         if (team.players && team.players.length > 0) {
-            return team.players.toString();
+            return team.players.reduce((p, c, i) => `${p}${c.name}${i === (team.players as []).length - 1 ? "." : ", "}`, "");
         } else {
             return "";
         }
