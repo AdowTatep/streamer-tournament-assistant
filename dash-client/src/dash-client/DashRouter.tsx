@@ -9,7 +9,7 @@ class DashRouter extends React.Component {
             <BrowserRouter>
                 <div>
                     <Route path="/" exact component={Home} />
-                    <Route path="/players" component={Players} />
+                    <Route path="/players" component={() => <Players namespace="player" />} />
                 </div>
             </BrowserRouter>
         );

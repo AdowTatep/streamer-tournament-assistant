@@ -1,17 +1,22 @@
-import { IPlayer } from '../Entities/IPlayer';
 import { EventEmitter } from 'events';
 import { DashConfiguration } from '../DashConfiguration';
 import * as request from "request";
 
-export class PlayersStore {
-    private host: string = `${new DashConfiguration().server}/players`;
+export class EntityStore<T> {
+    private host: string;
     private storeEvents: EventEmitter = new EventEmitter();
+    private namespace: string;
 
-    public on(eventName: "playerListUpdate", event: (event: any) => void): void {
+    constructor(namespace: string) {
+        this.host = `${new DashConfiguration().server}/${namespace}s`;
+        this.namespace = namespace;
+    }
+
+    public on(eventName: string, event: (event: any) => void): void {
         this.storeEvents.on(eventName, event);
     }
 
-    public retrievePlayers(player?: IPlayer): Promise<IPlayer[]> {
+    public retrievePlayers(player?: T): Promise<T[]> {
         return new Promise((resolve, reject) => {
             request.get(this.host, (error, resp, sbody) => {
                 if (error || sbody === undefined || !sbody) {
@@ -24,7 +29,7 @@ export class PlayersStore {
         });
     }
 
-    public createPlayer(player: IPlayer): Promise<IPlayer> {
+    public createPlayer(player: T): Promise<T> {
         let body = JSON.stringify({ player });
         let opts = {
             url: this.host,
@@ -46,7 +51,7 @@ export class PlayersStore {
         });
     }
 
-    public updatePlayer(player: IPlayer): Promise<IPlayer> {
+    public updatePlayer(player: T): Promise<T> {
         let body = JSON.stringify({ player });
         let opts = { url: this.host, body: body, headers: { 'content-type': 'application/json' } };
         return new Promise((resolve, reject) => {
@@ -61,7 +66,7 @@ export class PlayersStore {
         });
     }
 
-    public deletePlayer(player: IPlayer): Promise<IPlayer> {
+    public deletePlayer(player: T): Promise<T> {
         let body = JSON.stringify({ player });
         let opts = { url: this.host, body: body, headers: { 'content-type': 'application/json' } };
         return new Promise((resolve, reject) => {
