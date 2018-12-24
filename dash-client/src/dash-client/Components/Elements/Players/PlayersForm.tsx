@@ -10,11 +10,10 @@ class PlayersForm extends ElementForm<IPlayer> {
                 <label className="label">Nome</label>
                 <div className="control">
                     <input autoFocus
-                        ref={input => input && this.props.isUpdate ? input.focus() : null}
                         className="input"
                         type="text"
                         name="name"
-                        value={this.state.element ? this.state.element.name : ""}
+                        value={this.state.element ? (this.state.element.name ? this.state.element.name : "") : ""}
                         onChange={(e) => { this.onChange(e) }} />
                 </div>
             </div>

@@ -20,8 +20,9 @@ export default abstract class ElementForm<T> extends React.Component<IProps<T>, 
     }
 
     public componentWillReceiveProps(props: IProps<T>) {
-        if (!this.state.dirty && props.isUpdate)
+        if (props.element) {
             this.setState({ element: props.element });
+        }
     }
 
     public render() {

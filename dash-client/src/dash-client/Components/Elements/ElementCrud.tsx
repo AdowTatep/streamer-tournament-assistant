@@ -42,10 +42,10 @@ export default class ElementCrud<T, S> extends React.Component<IProps<T>, IState
                         <div>
                             <div className="level">
                                 <div className="level-left">
-                                    <button className="button" disabled={this.props.selectedElement === -1} onClick={() => { this.setElementToUpdate() }}>Editar</button>
+                                    <button className="button" disabled={this.disableCondition()} onClick={() => { this.setElementToUpdate() }}>Editar</button>
                                 </div>
                                 <div className="level-right">
-                                    <button className="button is-danger" disabled={this.props.selectedElement === -1} onClick={() => { this.setElementToDelete() }}>Apagar</button>
+                                    <button className="button is-danger" disabled={this.disableCondition()} onClick={() => { this.setElementToDelete() }}>Apagar</button>
                                 </div>
                             </div>
                             {this.getDeleteOrForm()}
@@ -55,6 +55,11 @@ export default class ElementCrud<T, S> extends React.Component<IProps<T>, IState
             </div>
         );
     }
+
+    private disableCondition(): boolean {
+        return this.props.selectedElement === -1 || (!this.props.elements) || (this.props.elements && this.props.elements.length <= 0)
+    }
+
     private getDeleteOrForm(): React.ReactNode {
         if (this.state.elementToDelete !== -1) {
             return (
@@ -89,7 +94,7 @@ export default class ElementCrud<T, S> extends React.Component<IProps<T>, IState
             // Call the delete
             this.props.deleteElement(this.props.elements[this.state.elementToDelete], this.state.elementToDelete);
             // Reset the delete state
-            this.setState({ elementToDelete: -1 });
+            this.setState({ elementToDelete: -1, elementToUpdate: -1 });
         }
     }
 

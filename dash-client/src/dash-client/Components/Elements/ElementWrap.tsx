@@ -128,7 +128,7 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
                     oldElements.splice(index, 1);
                 }
 
-                this.updateElementList(oldElements, { selectedElement: -1 });
+                this.updateElementList(oldElements);
             })
             .catch(err => {
                 // If some error occurred, rollback
