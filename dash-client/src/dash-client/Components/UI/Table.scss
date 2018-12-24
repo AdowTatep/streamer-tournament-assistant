@@ -28,6 +28,11 @@
                     cursor: pointer;
                     background-color: var(--gray5);
                 }
+
+                &.is-selected {
+                    background-color: var(--gray5);
+                    font-weight: bold;
+                }
             }
         }
 

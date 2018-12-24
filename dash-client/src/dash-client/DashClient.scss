@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Sarabun:400,800');
 
 @import "./Colors.scss";
+@import "bulma/";
 
+// Button overriding
 $button-background-color: var(--gray5);
 $button-color: var(--text-white);
 $button-focus-color: var(--text-white);
@@ -10,18 +12,55 @@ $button-padding-horizontal: 2em;
 $family-primary: 'Sarabun',
 sans-serif;
 
+//Input overriding
+$label-color: var(--gray4);
+$label-weight: normal;
+$control-radius: 0px;
+
 @import "bulma";
 
+// Button overriding
 .button {
     border-radius: 0px;
     border: 1px solid transparent;
 
     &:hover {
-
         border: 1px solid transparent;
+        color: var(--text-gray);
+    }
+
+    &.is-danger {
+        background-color: var(--danger);
+
+        &:hover {
+            background-color: var(--danger);
+            color: var(--text-gray);
+        }
+
+        &:disabled {
+            background-color: var(--gray2);
+            color: var(--text-black);
+        }
+    }
+
+    &:disabled {
+        background-color: var(--gray2);
+        color: var(--text-black);
     }
 }
 
+.input {
+    background-color: var(--gray2);
+    border: 0px;
+    color: var(--gray4);
+    box-shadow: none;
+
+    &:disabled {
+        background-color: var(--gray1);
+    }
+}
+
+// Default Css
 html {
     font-family: 'Sarabun', sans-serif !important;
     background-color: #363636 !important;

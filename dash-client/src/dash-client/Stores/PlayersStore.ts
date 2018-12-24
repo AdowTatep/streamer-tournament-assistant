@@ -12,37 +12,45 @@ export class PlayersStore {
     private storeEvents: EventEmitter = new EventEmitter();
 
     constructor() {
-        this.playerList.push({ name: 'joao' });
-        this.storeEvents.emit("playerListUpdate", this.playerList);
-        setInterval(() => {
-            this.playerList.push({ name: 'joao' });
-            this.storeEvents.emit("playerListUpdate", this.playerList);
-        }, 10000);
-
         this.connect()
             .then(socket => {
                 socket.on('playerListUpdate', () => {
                     this.storeEvents.emit("playerListUpdate", this.playerList);
                 });
-
-                this.socket = socket;
-            })
+            });
     }
 
     public on(eventName: "playerListUpdate", event: (event: any) => void): void {
         this.storeEvents.on(eventName, event);
     }
 
-    public createPlayer() {
+    public insertPlayer(player: IPlayer) {
+        this
+            .connect()
+            .then(socket => {
+                socket.emit('create', player);
+            })
+    }
+
+    public updatePlayer(player: IPlayer) {
+
+    }
+
+    public deletePlayer(player: IPlayer) {
 
     }
 
     private connect(): Promise<any> {
         return new Promise((resolve, reject) => {
-            let socket = io.connect(`${new DashConfiguration().socketUri}/players`);
-            socket.on('connect', () => {
-                resolve(socket);
-            });
+            if (!this.socket) {
+                let socket = io.connect(`${new DashConfiguration().socketUri}/players`);
+                socket.on('connect', () => {
+                    this.socket = socket;
+                    resolve(socket);
+                });
+            } else {
+                resolve(this.socket);
+            }
         });
     }
 }

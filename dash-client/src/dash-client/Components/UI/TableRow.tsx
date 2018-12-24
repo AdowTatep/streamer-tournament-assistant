@@ -4,6 +4,9 @@ import "./TableRow.scss";
 
 export interface IProps {
     columns: TableColumn[];
+    onClick?: (e: React.MouseEvent) => void;
+    onDoubleClick?: (e: React.MouseEvent) => void;
+    className?: string;
 }
 
 class TableRow extends React.Component<IProps> {
@@ -13,10 +16,22 @@ class TableRow extends React.Component<IProps> {
 
     public render() {
         return (
-            <tr className={`component-tableRow`}>
+            <tr className={`component-tableRow ${this.props.className ? this.props.className : ""}`} onClick={(e) => { this.onClick(e) }} onDoubleClick={(e) => {this.onDoubleClick(e)}}>
                 {this.props.columns}
             </tr>
         );
+    }
+
+    public onClick(e: React.MouseEvent): void {
+        if (this.props.onClick) {
+            this.props.onClick(e);
+        }
+    }
+
+    public onDoubleClick(e: React.MouseEvent): void {
+        if (this.props.onDoubleClick) {
+            this.props.onDoubleClick(e);
+        }
     }
 }
 
