@@ -23,11 +23,17 @@ export default class Players extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.store = new PlayersStore();
-        this.state = { players: this.store.playerList, selectedPlayer: -1 }
+        this.state = { players: new Array<IPlayer>(), selectedPlayer: -1 }
     }
 
     public componentDidMount() {
         this.store.on("playerListUpdate", (event) => { this.updatePlayerList(event); })
+        this.store
+            .retrievePlayers()
+            .then(players => {
+                this.updatePlayerList(players);
+            })
+            .catch(console.error);
     }
 
     public render() {
@@ -53,22 +59,73 @@ export default class Players extends React.Component<IProps, IState> {
     }
 
     private onPlayerCreate(element: IPlayer): void {
-        this.state.players.push(element);
-        this.updatePlayerList(this.state.players);
-        this.store.insertPlayer(element);
+        //Keep old elements
+        let oldPlayers = [...this.state.players];
+        let newPlayers = [...this.state.players];
+
+        // Push the new element and update the state
+        newPlayers.push(element);
+        this.updatePlayerList(newPlayers);
+
+        // Try to really create the element
+        this.store
+            .createPlayer(element)
+            .then(player => {
+                // If the element was created, update the list again, but with the real data
+                oldPlayers.push(player);
+                this.updatePlayerList(oldPlayers);
+            })
+            .catch(err => {
+                // If some error occurred, rollback
+                this.updatePlayerList(oldPlayers);
+                console.error(err);
+            });
+
     }
 
     private onPlayerUpdate(element: IPlayer, i: number): void {
-        this.state.players[i] = element;
-        this.updatePlayerList(this.state.players);
-        this.store.updatePlayer(element);
+        //Keep old elements
+        let oldPlayers = [...this.state.players];
+        let newPlayers = [...this.state.players];
+
+        // Update the element values and update the state
+        newPlayers[i] = element;
+        this.updatePlayerList(newPlayers);
+
+        this.store.updatePlayer(element)
+            .then(player => {
+                // If succeeded, update the list again, but with the real data
+                oldPlayers.push(player);
+                this.updatePlayerList(oldPlayers);
+            })
+            .catch(err => {
+                // If some error occurred, rollback
+                this.updatePlayerList(oldPlayers);
+                console.error(err);
+            });
     }
 
     private onPlayerDelete(player: IPlayer, i: number): void {
+        //Keep old elements
+        let oldPlayers = [...this.state.players];
+        let newPlayers = [...this.state.players];
+
         // Get every that isn't the deleted
+        newPlayers = newPlayers.filter((x, ind) => ind !== i)
+        this.updatePlayerList(newPlayers);
+
         // Refresh list
-        this.store.deletePlayer(this.state.players[i]);
-        this.updatePlayerList(this.state.players.filter((x, ind) => ind !== i));
+        this.store.deletePlayer(this.state.players[i])
+            .then(player => {
+                // If succeeded, update the list again, but with the real data
+                oldPlayers.push(player);
+                this.updatePlayerList(oldPlayers);
+            })
+            .catch(err => {
+                // If some error occurred, rollback
+                this.updatePlayerList(oldPlayers);
+                console.error(err);
+            });
     }
 
     private onPlayerSelected(player: IPlayer, i: number): void {
@@ -80,7 +137,6 @@ export default class Players extends React.Component<IProps, IState> {
     }
 
     private updatePlayerList(players: IPlayer[]): void {
-        this.store.playerList = players;
         this.setState({ players });
     }
 }

@@ -1,4 +1,5 @@
 export interface IConfig {
     mongoUrl: string;
-    socketPort: string;
+    socketPort: number;
+    serverPort: number;
 }

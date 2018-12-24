@@ -1,58 +1,86 @@
-import { IPlayer } from "../entities/IPlayer";
 import * as socketIo from "socket.io";
+import * as express from "express";
+import { IPlayer } from "../entities/IPlayer";
 import mongoCollection from "./MongoService";
 
 export class PlayerService {
-
-    public bindQueue(socket: socketIo.Server): socketIo.Namespace {
-        return socket
-            .of('/players')
-            .on('connection', (socket) => {
-                socket.on('create', (args: IPlayer) => {
-                    this.create(args)
-                        .then(result => {
-                            //Dispatch "list updated"
-                            socket.emit("playerListUpdate", this.retrieve());
-                        })
-                        .catch(console.error);
+    public bindEndpoints(app: express.Express): any {
+        app.get('/players', (request, response) => {
+            this.retrieve(request.query)
+                .then(result => {
+                    response.send({ success: true, players: result });
+                })
+                .catch((error) => {
+                    response.status(500);
+                    response.send({ success: false });
                 });
+        });
 
-                socket.on('retrieve', (args) => {
-                    this.retrieve(args)
-                        .then(result => {
-                            //Dispatch result
-                        })
-                        .catch(console.error);
-                });
+        app.post('/players', (request, response) => {
+            if (request.body.player) {
+                this.create(request.body.player)
+                    .then(result => {
+                        response.send({ success: true, player: result });
+                    })
+                    .catch((error) => {
+                        response.status(500);
+                        response.send({ success: false });
+                    });
+            } else {
+                response.status(400);
+                response.send({ success: false, message: "Body should not have an empty player" });
+            }
+        });
 
-                socket.on('update', (args) => {
-                    this.update(args)
-                        .then(result => {
-                            //Dispatch result
-                            socket.emit("playerListUpdate", this.retrieve());
-                        })
-                        .catch(console.error);
-                });
+        app.put('/players', (request, response) => {
+            if (request.body.player) {
+                this.update(request.body.player)
+                    .then(result => {
+                        response.send({ success: true, players: result });
+                    })
+                    .catch((error) => {
+                        response.status(500);
+                        response.send({ success: false });
+                    });
+            } else {
+                response.status(400);
+                response.send({ success: false, message: "Body should not have an empty player" });
+            }
+        });
 
-                socket.on('delete', (args) => {
-                    this.delete(args)
-                        .then(result => {
-                            //Dispatch result
-                            socket.emit("playerListUpdate", this.retrieve());
-                        })
-                        .catch(console.error);
-                });
-            });
+        app.delete('/players', (request, response) => {
+            if (request.body.player) {
+                this.delete(request.body.player)
+                    .then(result => {
+                        response.send({ success: true, players: result });
+                    })
+                    .catch((error) => {
+                        response.status(500);
+                        response.send({ success: false });
+                    });
+            } else {
+                response.status(400);
+                response.send({ success: false, message: "Body should not have an empty player" });
+            }
+        });
     }
 
-    private create(player: IPlayer): Promise<any> {
+    public bindQueue(socket: socketIo.Server): socketIo.Namespace | undefined {
+        return undefined;
+    }
+
+    private create(player: IPlayer): Promise<IPlayer> {
         return new Promise((resolve, reject) => {
             mongoCollection<IPlayer>("tournament", "players")
                 .then(collection => {
                     collection
                         .insert({ id: `player${Date.now()}`, ...player })
                         .then(x => {
-                            resolve();
+                            if (x.insertedCount > 0) {
+                                resolve(x.ops[0]);
+                            } else {
+                                reject(`Inserted ${x.insertedCount}`);
+                            }
                         })
                         .catch(reject);
                 })
