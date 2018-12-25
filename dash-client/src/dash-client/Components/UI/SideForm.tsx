@@ -25,7 +25,7 @@ class SideForm extends React.Component<IProps> {
                 </Heading>
 
                 <Card className="form-card" light={true}>
-                    <form onSubmit={(e) => { this.submit(e); }}>
+                    <form onSubmit={(e) => { this.submit(e); }} autoComplete="off">
                         {this.props.validation.errors && this.props.validation.errors.filter(x => x.name === "default").length > 0 ?
                             <div className="has-text-danger has-text-centered">
                                 {

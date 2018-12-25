@@ -13,6 +13,7 @@ class PlayersForm extends ElementForm<IPlayer> {
                         className="input"
                         type="text"
                         name="name"
+                        autoComplete="off"
                         value={this.state.element ? (this.state.element.name ? this.state.element.name : "") : ""}
                         onChange={(e) => { this.onChange(e) }} />
                 </div>

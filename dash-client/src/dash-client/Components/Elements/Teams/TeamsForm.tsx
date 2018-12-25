@@ -46,6 +46,9 @@ class TeamsForm extends ElementForm<ITeam> {
             } else if (this.state.element.players && this.state.element.players.some(x => !x.name || x.name.length < 3)) {
                 validation.valid = false;
                 validation.errors.push({ name: "default", error: "Um jogador precisa ter no mínimo 3 caracteres no nome" });
+            } else if (!this.playerList || this.state.element.players && !this.state.element.players.every(x => this.playerList.some(y => y.name === x.name))) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "O jogador fornecido precisa existir na lista de jogadores" });
             }
         }
 
@@ -132,6 +135,7 @@ class TeamsForm extends ElementForm<ITeam> {
                         className="input"
                         type="text"
                         name="name"
+                        autoComplete="off"
                         value={this.state.element ? (this.state.element.name ? this.state.element.name : "") : ""}
                         onChange={(e) => { this.onChange(e) }} />
                 </div>
@@ -148,6 +152,7 @@ class TeamsForm extends ElementForm<ITeam> {
                         className="input"
                         type="text"
                         name="tag"
+                        autoComplete="off"
                         value={this.state.element ? (this.state.element.tag ? this.state.element.tag : "") : ""}
                         onChange={(e) => { this.onChange(e) }} />
                 </div>
