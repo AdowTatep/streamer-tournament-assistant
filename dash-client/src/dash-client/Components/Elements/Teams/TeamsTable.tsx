@@ -34,6 +34,7 @@ class TeamsTable extends React.Component<IProps> {
         return (
             <React.Fragment>
                 <TableColumn header={true}>Nome</TableColumn>
+                <TableColumn header={true}>Tag</TableColumn>
                 <TableColumn header={true}>Jogadores</TableColumn>
             </React.Fragment>
         ) as unknown as TableColumn[];
@@ -43,6 +44,7 @@ class TeamsTable extends React.Component<IProps> {
         return (
             <React.Fragment>
                 <TableColumn key={team.name}>{team.name}</TableColumn>
+                <TableColumn key={team.tag}>{team.tag}</TableColumn>
                 <TableColumn key={this.getPlayersNames(team)}>{this.getPlayersNames(team)}</TableColumn>
             </React.Fragment>
         ) as unknown as TableColumn[];

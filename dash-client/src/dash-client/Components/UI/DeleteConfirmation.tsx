@@ -13,7 +13,7 @@ class DeleteConfirmation extends React.Component<IProps> {
     public render() {
         return (
             <div className={`component-deleteConfirmation`}>
-                <SideForm onSubmit={() => { this.onSubmit() }} onCancel={() => { this.onCancel() }} isUpdate={true} heading={"Remover"}>
+                <SideForm onSubmit={() => { this.onSubmit() }} onCancel={() => { this.onCancel() }} isUpdate={true} heading={"Remover"} validation={{ valid: true, errors: [] }}>
                     <p>Você tem certeza de que quer remover?</p>
                 </SideForm>
             </div>

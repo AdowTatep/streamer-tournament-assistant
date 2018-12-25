@@ -19,6 +19,20 @@ class PlayersForm extends ElementForm<IPlayer> {
             </div>
         );
     }
+
+    protected validation(): { valid: boolean, errors: { name: string, error: string }[] } {
+        let validation = { valid: true, errors: new Array<{ name: string, error: string }>() };
+
+        if (this.state.element && this.state.dirty) {
+            if (!this.state.element.name || this.state.element.name.length < 3) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "É preciso ter no mínimo 3 caracteres no nome" });
+            }
+        }
+
+        return validation;
+    }
+
 }
 
 export default PlayersForm;

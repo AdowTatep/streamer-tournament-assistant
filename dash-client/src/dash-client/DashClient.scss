@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Sarabun:400,800');
 
 @import "./Colors.scss";
-@import "bulma/";
 
 // Button overriding
 $button-background-color: var(--gray5);
@@ -18,6 +17,25 @@ $label-weight: normal;
 $control-radius: 0px;
 
 @import "bulma";
+
+.has-text-danger {
+    $colorr: $danger;
+    color: adjust-color($color: $colorr, $lightness: 20%) !important;
+}
+
+.is-danger {
+    background-color: var(--danger);
+
+    &:hover {
+        background-color: var(--danger);
+        color: var(--text-gray);
+    }
+
+    &:disabled {
+        background-color: var(--gray2);
+        color: var(--text-black);
+    }
+}
 
 // Button overriding
 .button {

@@ -7,5 +7,7 @@ export interface ITeam {
 
     logoUrl: string;
 
+    tag: string;
+
     players: IPlayer[];
 }

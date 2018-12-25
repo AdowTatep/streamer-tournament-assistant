@@ -20,9 +20,36 @@ class TeamsForm extends ElementForm<ITeam> {
         return (
             <React.Fragment>
                 {this.getNameField()}
+                {this.getTagField()}
                 {this.getPlayersField()}
             </React.Fragment>
         );
+    }
+
+    protected validation(): { valid: boolean, errors: { name: string, error: string }[] } {
+        let validation = { valid: true, errors: new Array<{ name: string, error: string }>() };
+
+        if (this.state.element && this.state.dirty) {
+            if (!this.state.element.name || this.state.element.name.length < 3) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "É preciso ter no mínimo 3 caracteres no nome" });
+            }
+
+            if (!this.state.element.tag || this.state.element.tag.length < 2 || this.state.element.tag.length > 4) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "É preciso ter no mínimo de 2 a 3 caracteres na tag" });
+            }
+
+            if (!this.state.element.players || this.state.element.players.length < 1) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "É preciso ter no 1 jogador em um time" });
+            } else if (this.state.element.players && this.state.element.players.some(x => !x.name || x.name.length < 3)) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "Um jogador precisa ter no mínimo 3 caracteres no nome" });
+            }
+        }
+
+        return validation;
     }
 
     private getPlayersField(): React.ReactNode {
@@ -84,7 +111,7 @@ class TeamsForm extends ElementForm<ITeam> {
             let content = this.state.element.players;
 
             if (content) {
-                content[i].name = e.target.value;
+                content[i].name = e.target.value.toString().trim();
             }
 
             const val: any = { ...this.state.element, players: content };
@@ -106,8 +133,23 @@ class TeamsForm extends ElementForm<ITeam> {
                         type="text"
                         name="name"
                         value={this.state.element ? (this.state.element.name ? this.state.element.name : "") : ""}
-                        onChange={(e) => { this.onChange(e) }}
-                        list="teams" />
+                        onChange={(e) => { this.onChange(e) }} />
+                </div>
+            </div>
+        );
+    }
+
+    private getTagField(): React.ReactNode {
+        return (
+            <div className="field">
+                <label className="label">Tag</label>
+                <div className="control">
+                    <input autoFocus
+                        className="input"
+                        type="text"
+                        name="tag"
+                        value={this.state.element ? (this.state.element.tag ? this.state.element.tag : "") : ""}
+                        onChange={(e) => { this.onChange(e) }} />
                 </div>
             </div>
         );
