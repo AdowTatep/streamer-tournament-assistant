@@ -11,4 +11,5 @@ export interface IMatch {
     bestOf?: number
     index?: number;
     teamInfo?: IMatchTeamInfo[];
+    tournamentName: string;
 }

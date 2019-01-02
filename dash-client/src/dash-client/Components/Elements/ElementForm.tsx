@@ -55,7 +55,7 @@ export default abstract class ElementForm<T> extends React.Component<IProps<T>, 
         if (target.type == "number" || target.type == "tel")
             val = { ...this.state.element, [name]: parseInt(value.toString().trim()) };
         else
-            val = { ...this.state.element, [name]: value.toString() };
+            val = { ...this.state.element, [name]: value };
 
         this.setState({
             element: val,

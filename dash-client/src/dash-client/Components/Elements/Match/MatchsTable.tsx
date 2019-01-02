@@ -36,7 +36,9 @@ class MatchsTable extends React.Component<IProps> {
     private getMatchsHeaders(): TableColumn[] {
         return (
             <React.Fragment>
+                <TableColumn header={true}>Torneio</TableColumn>
                 <TableColumn header={true}>Index</TableColumn>
+                <TableColumn header={true}>Ativa</TableColumn>
                 <TableColumn header={true}>Melhor de</TableColumn>
                 <TableColumn header={true}>Tipo</TableColumn>
                 <TableColumn header={true}>Times</TableColumn>
@@ -47,7 +49,9 @@ class MatchsTable extends React.Component<IProps> {
     private getMatchsColumns(match: IMatch): TableColumn[] {
         return (
             <React.Fragment>
+                <TableColumn key={match.tournamentName}>{match.tournamentName}</TableColumn>
                 <TableColumn key={match.index}>{match.index}</TableColumn>
+                <TableColumn key={match.isActive ? match.isActive.toString() : "false"}>{match.isActive ? match.isActive.toString() : "false"}</TableColumn>
                 <TableColumn key={match.bestOf}>{match.bestOf}</TableColumn>
                 <TableColumn key={match.type}>{match.type}</TableColumn>
                 <TableColumn key={this.getTeamInfo(match)}>{this.getTeamInfo(match)}</TableColumn>

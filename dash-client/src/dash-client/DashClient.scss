@@ -67,6 +67,10 @@ $control-radius: 0px;
     }
 }
 
+.checkbox {
+    color: var(--gray4);
+}
+
 .input,
 .select select {
     background-color: var(--gray2);

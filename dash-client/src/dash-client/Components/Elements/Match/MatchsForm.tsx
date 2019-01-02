@@ -4,21 +4,53 @@ import { IMatch, IMatchTeamInfo } from '../../../Entities/IMatch';
 import { ITeam } from '../../../Entities/ITeam';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { EntityStore } from '../../../Stores/EntityStore';
+import { ITournament } from '../../../Entities/ITournament';
 
 class MatchsForm extends ElementForm<IMatch> {
 
     teamsStore: EntityStore<ITeam> = new EntityStore<ITeam>("team");
     teamList: ITeam[] = [];
 
+    tournamentsStore: EntityStore<ITeam> = new EntityStore<ITeam>("tournament");
+    tournamentList: ITeam[] = [];
+
     public componentDidMount() {
         this.teamsStore
             .retrieveEntities()
             .then(teams => this.teamList = teams);
+
+        this.tournamentsStore
+            .retrieveEntities()
+            .then(tournament => this.tournamentList = tournament);
     }
 
     public getFields(): React.ReactNode {
         return (
             <React.Fragment>
+                <div className="field">
+                    <label className="checkbox">
+                        <input type="checkbox"
+                            name="isActive"
+                            value={(this.state.element ? (this.state.element.isActive ? this.state.element.isActive : false) : false as any)}
+                            checked={this.state.element ? (this.state.element.isActive ? this.state.element.isActive : false) : false}
+                            onChange={(e) => { this.onChange(e) }} />
+                        Ativa
+                    </label>
+                </div>
+                <div className="field">
+                    <label className="label">Torneio</label>
+                    <div className="control">
+                        <input autoFocus
+                            className="input"
+                            type="text"
+                            name="tournamentName"
+                            autoComplete="off"
+                            list="tournaments"
+                            value={this.state.element ? (this.state.element.tournamentName ? this.state.element.tournamentName : "") : ""}
+                            onChange={(e) => { this.onChange(e) }} />
+                        {this.getTournamentDataList()}
+                    </div>
+                </div>
                 {this.getIndexBestOf()}
                 {this.getType()}
                 {this.getTeamsField()}
@@ -30,6 +62,14 @@ class MatchsForm extends ElementForm<IMatch> {
         let validation = { valid: true, errors: new Array<{ name: string, error: string }>() };
 
         if (this.state.element && this.state.dirty) {
+            if (!this.state.element.tournamentName || this.state.element.tournamentName.length < 3) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "O torneio precisa ter no mínimo 3 caracteres no nome" });
+            } else if (!this.tournamentList || this.state.element.tournamentName && !this.tournamentList.some(y => y.name === (this.state.element as IMatch).tournamentName)) {
+                validation.valid = false;
+                validation.errors.push({ name: "default", error: "O torneio fornecido precisa existir na lista de torneios" });
+            }
+
             if (!this.state.element.index || isNaN(parseInt((this.state.element.index as any)))) {
                 validation.valid = false;
                 validation.errors.push({ name: "default", error: "Posição deve ser um número" });
@@ -61,6 +101,14 @@ class MatchsForm extends ElementForm<IMatch> {
         }
 
         return validation;
+    }
+
+    private getTournamentDataList() {
+        return (
+            <datalist id="tournaments">
+                {this.tournamentList.map((x, i) => <option key={i} value={x.name} />)}
+            </datalist>
+        );
     }
 
     private getIndexBestOf() {

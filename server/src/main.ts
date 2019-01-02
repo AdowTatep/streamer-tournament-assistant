@@ -34,6 +34,10 @@ const matchService = new EntityService<IMatch>("match");
 matchService.bindQueue(io);
 matchService.bindEndpoints(app);
 
+const tournamentService = new EntityService<IMatch>("tournament");
+tournamentService.bindQueue(io);
+tournamentService.bindEndpoints(app);
+
 app.listen(config.serverPort, () => {
     console.log(`Server running at port ${config.serverPort}`)
 });
