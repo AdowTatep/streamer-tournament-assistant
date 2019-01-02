@@ -67,7 +67,8 @@ $control-radius: 0px;
     }
 }
 
-.input {
+.input,
+.select select {
     background-color: var(--gray2);
     border: 0px;
     color: var(--gray4);

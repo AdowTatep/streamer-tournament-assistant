@@ -20,6 +20,7 @@ export class EntityService<T extends TEntity> {
                     response.send({ success: true, [this.namespace + "s"]: result });
                 })
                 .catch((error) => {
+                    console.error(`${this.namespace} EntityService => Retrieve: ${error}. With query ${request.query}`);
                     response.status(500);
                     response.send({ success: false });
                 });
@@ -32,6 +33,7 @@ export class EntityService<T extends TEntity> {
                         response.send({ success: true, [this.namespace]: result });
                     })
                     .catch((error) => {
+                        console.error(`${this.namespace} EntityService => Create: ${error}. With body ${request.body}`);
                         response.status(500);
                         response.send({ success: false });
                     });
@@ -48,6 +50,7 @@ export class EntityService<T extends TEntity> {
                         response.send({ success: true, [this.namespace]: result });
                     })
                     .catch((error) => {
+                        console.error(`${this.namespace} EntityService => Update: ${error}. With body ${request.body}`);
                         response.status(500);
                         response.send({ success: false });
                     });
@@ -64,6 +67,7 @@ export class EntityService<T extends TEntity> {
                         response.send({ success: true, [this.namespace]: result });
                     })
                     .catch((error) => {
+                        console.error(`${this.namespace} EntityService => Delete: ${error}. With body ${request.body}`);
                         response.status(500);
                         response.send({ success: false });
                     });

@@ -1,5 +1,7 @@
 import * as React from 'react';
+import "./ElementForm.scss";
 import SideForm from '../UI/SideForm';
+import { EntityStore } from '../../Stores/EntityStore';
 
 export interface IProps<T> {
     element?: T;
@@ -47,7 +49,13 @@ export default abstract class ElementForm<T> extends React.Component<IProps<T>, 
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        const val: any = { ...this.state.element, [name]: value.toString().trim() };
+
+        let val: any = null;
+
+        if (target.type == "number" || target.type == "tel")
+            val = { ...this.state.element, [name]: parseInt(value.toString().trim()) };
+        else
+            val = { ...this.state.element, [name]: value.toString() };
 
         this.setState({
             element: val,

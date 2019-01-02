@@ -41,9 +41,10 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
         return (
             <div className={`component-players`}>
                 <Heading>
-                    {this.props.namespace.substring(0, 1).toLocaleUpperCase() + this.props.namespace.substring(1)}s
+                    {this.getTitle()}
                 </Heading>
                 <ElCrud
+                    store={this.store}
                     elements={this.state.elements}
                     selectedElement={this.state.selectedElement}
                     createElement={(element) => { this.onElementCreate(element) }}
@@ -55,6 +56,8 @@ export default abstract class ElementWrap<T extends TElement> extends React.Comp
             </div>
         );
     }
+
+    protected abstract getTitle(): string;
 
     protected abstract getElementTable(): React.ReactNode;
 

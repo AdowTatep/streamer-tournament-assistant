@@ -6,6 +6,10 @@ import TeamsForm from '../Elements/Teams/TeamsForm';
 
 
 export default class Teams extends ElementWrap<ITeam> {
+    protected getTitle(): string {
+        return "Teams";
+    }
+
     protected getElementTable(): React.ReactNode {
         return (<TeamsTable teams={this.state.elements} onteamSelected={(player, i) => { this.onElementSelected(player, i); }} />);
     }

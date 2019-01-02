@@ -4,6 +4,7 @@ import FixedColumn from '../Layout/FixedColumn';
 import Card from '../UI/Card';
 import DeleteConfirmation from '../UI/DeleteConfirmation';
 import ElementForm from './ElementForm';
+import { EntityStore } from '../../Stores/EntityStore';
 
 interface IProps<T> {
     elements: T[];
@@ -13,6 +14,7 @@ interface IProps<T> {
     createElement: (element: T, ) => void;
     deleteElement: (element: T, i: number) => void;
     updateElement: (element: T, i: number) => void;
+    store: EntityStore<T>;
 }
 
 interface IState<T> {

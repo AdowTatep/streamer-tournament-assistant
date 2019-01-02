@@ -12,6 +12,7 @@ import { IConfig } from "./IConfig";
 import { EntityService } from "./services/EntityService";
 import { IPlayer } from "./entities/IPlayer";
 import { ITeam } from "./entities/ITeam";
+import { IMatch } from "./entities/IMatch";
 
 const config: IConfig = JSON.parse(fs.readFileSync(`./config.${process.env.NODE_ENV || "development"}.json`, 'utf8'));
 
@@ -28,6 +29,10 @@ playerService.bindEndpoints(app);
 const teamService = new EntityService<ITeam>("team");
 teamService.bindQueue(io);
 teamService.bindEndpoints(app);
+
+const matchService = new EntityService<IMatch>("match");
+matchService.bindQueue(io);
+matchService.bindEndpoints(app);
 
 app.listen(config.serverPort, () => {
     console.log(`Server running at port ${config.serverPort}`)
